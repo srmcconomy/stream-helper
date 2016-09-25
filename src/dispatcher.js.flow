@@ -1,0 +1,56 @@
+// @flow
+
+import type { TransformRecord, StreamRecord } from './Records';
+
+export type DispatchToken = string;
+
+type TransformPayload = {
+  type: 'set-transform',
+  name: string,
+  transform: TransformRecord,
+}
+
+type StreamPayload = {
+  type: 'set-stream',
+  stream: StreamRecord,
+  name: string,
+}
+
+type SelectedPayload = {
+  type: 'select-stream',
+  name: string,
+}
+
+type SetAndSelectPayload = {
+  type: 'set-and-select-stream',
+  stream: StreamRecord,
+  name: string,
+}
+
+type MovePayload = {
+  type: 'move-stream',
+  from: string,
+  to: string,
+}
+
+type OverlayPayload = {
+  type: 'set-overlay',
+  value: boolean,
+}
+
+type Payload = TransformPayload |
+  StreamPayload |
+  SelectedPayload |
+  MovePayload |
+  SetAndSelectPayload |
+  OverlayPayload;
+
+declare class Dispatcher<TPayload> {
+  register(callback: (payload: TPayload) => void): DispatchToken;
+  unregister(id: DispatchToken): void;
+  waitFor(ids: Array<DispatchToken>): void;
+  dispatch(payload: TPayload): void;
+  isDispatching(): boolean;
+}
+
+declare export default Dispatcher<Payload>;

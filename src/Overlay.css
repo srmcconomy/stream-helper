@@ -1,0 +1,8 @@
+.Overlay {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 133.33vh;
+  z-index: 10;
+}

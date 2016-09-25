@@ -1,0 +1,52 @@
+iframe {
+  position: relative;
+  border: none;
+  float: right;
+}
+
+.Stream {
+  position: absolute;
+  height: 45vh;
+  width: 60vh;
+  overflow: hidden;
+}
+
+.Stream.one {
+  right: 4.444vh;
+  top: 3.333vh;
+}
+
+.Stream.two {
+  right: 4.444vh;
+  bottom: 3.333vh;
+}
+
+.Stream.three {
+  right: 68.888vh;
+  bottom: 3.333vh;
+}
+
+.Stream.loading {
+  right: 136.666vh;
+  bottom: 4.444vh;
+  background: magenta;
+}
+
+.Stream.full {
+  z-index: 5;
+  height: 90vh;
+  width: 120vh;
+  right: 6.666vh;
+  top: 4.444vh;
+}
+
+.Stream .name {
+  position: absolute;
+  top: 2vh;
+  right: 2vh;
+  font-size: 3.5vh;
+  color: white;
+  z-index: 1;
+  font-weight: 600;
+  -webkit-text-stroke: 0.15vh black;
+}
