@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import store from './store';
-import './Overlay.css'
+import './Overlay.css';
 
 type State = {
   show: boolean,
@@ -33,7 +33,7 @@ export default class Overlay extends Component {
 
   render() {
     if (this.state.show) {
-      return <div className="Overlay" />
+      return <div className="Overlay" />;
     } else {
       return null;
     }

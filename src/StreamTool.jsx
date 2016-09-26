@@ -5,6 +5,7 @@ import { List } from 'immutable';
 import './StreamTool.css';
 import { StreamRecord } from './Records';
 import dispatcher from './dispatcher';
+import store from './store';
 
 type State = {
   streamNames: List<string>,
@@ -46,9 +47,26 @@ export default class StreamTool extends Component {
 
   constructor() {
     super();
-    this.state = { streamNames: List(racers.sort(function(a, b) {
-      return a.toUpperCase() < b.toUpperCase() ? -1 : 1;
-    })), filter: '' };
+    // this.state = { streamNames: List(racers.sort(function(a, b) {
+    //   return a.toUpperCase() < b.toUpperCase() ? -1 : 1;
+    // })), filter: '' };
+    const data = store.get();
+    this.state = { filter: '', streamNames: data.race };
+  }
+
+  componentDidMount() {
+    store.addChangeListener(this._onStoreChange);
+  }
+
+  componentWillUnmount() {
+    store.removeChangeListener(this._onStoreChange);
+  }
+
+  _onStoreChange = () => {
+    const data = store.get();
+    this.setState({
+      streamNames: data.race
+    });
   }
 
   _handleFilterChange = (event: Event): void => {
@@ -67,7 +85,7 @@ export default class StreamTool extends Component {
           position: 'loading',
         })
       });
-    }
+    };
   }
 
   render() {
@@ -83,11 +101,11 @@ export default class StreamTool extends Component {
           {name}
         </button>
       );
-    })
+    });
     return (
-      <div>
-        <div>
-          Choose a stream
+      <div className="StreamTool">
+        <div className="title">
+          Choose a stream:
         </div>
         <input
           placeholder="filter"
@@ -98,6 +116,6 @@ export default class StreamTool extends Component {
           {streams}
         </div>
       </div>
-    )
+    );
   }
 }

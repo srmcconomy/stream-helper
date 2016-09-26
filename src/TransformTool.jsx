@@ -5,6 +5,7 @@ import store from './store';
 import { TransformRecord } from './Records';
 import type { TransformRecordProp } from './Records';
 import dispatcher from './dispatcher';
+import './TransformTool.css';
 
 type State = {
   name: ?string,
@@ -29,12 +30,12 @@ export default class TransformTool extends Component {
       this.state = {
         name,
         transform: data.transforms.get(name),
-      }
+      };
     } else {
       this.state = {
         name: '',
         transform: new TransformRecord(),
-      }
+      };
     }
   }
 
@@ -49,7 +50,7 @@ export default class TransformTool extends Component {
           transform: data.transforms.get(this.state.name).set(prop, +value),
         });
       }
-    }
+    };
   }
 
   componentDidMount() {
@@ -89,7 +90,7 @@ export default class TransformTool extends Component {
         <div className="title">
           Transform {name}'s stream
         </div>
-        <div>
+        <div className="inputs">
           {inputs}
         </div>
       </div>

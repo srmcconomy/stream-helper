@@ -1,6 +1,7 @@
 // @flow
 
 import type { TransformRecord, StreamRecord } from './Records';
+import type { List } from 'immutable';
 
 export type DispatchToken = string;
 
@@ -38,19 +39,32 @@ type OverlayPayload = {
   value: boolean,
 }
 
-type Payload = TransformPayload |
+type LoadRacePayload = {
+  type: 'load-race',
+  id: string,
+}
+
+type SetRacePayload = {
+  type: 'set-race',
+  entrants: List<string>,
+}
+
+export type Payload = TransformPayload |
   StreamPayload |
   SelectedPayload |
   MovePayload |
   SetAndSelectPayload |
-  OverlayPayload;
+  OverlayPayload |
+  LoadRacePayload |
+  SetRacePayload;
 
-declare class Dispatcher<TPayload> {
+declare class ExceptDispatcher<TPayload> {
   register(callback: (payload: TPayload) => void): DispatchToken;
   unregister(id: DispatchToken): void;
   waitFor(ids: Array<DispatchToken>): void;
   dispatch(payload: TPayload): void;
+  broadcast(payload: TPayload, except: DispatchToken): void;
   isDispatching(): boolean;
 }
 
-declare export default Dispatcher<Payload>;
+declare export default ExceptDispatcher<Payload>;

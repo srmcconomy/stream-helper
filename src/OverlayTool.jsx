@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import dispatcher from './dispatcher';
 import store from './store';
+import './OverlayTool.css';
 
 type State = {
   checked: boolean,
@@ -15,7 +16,7 @@ export default class OverlayTool extends Component {
   constructor() {
     super();
     const data = store.get();
-    this.state = { checked: data.overlayOn }
+    this.state = { checked: data.overlayOn };
   }
 
   componentDidMount() {
@@ -43,10 +44,10 @@ export default class OverlayTool extends Component {
     return (
       <div className="OverlayTool" onClick={this._onClick}>
         <div className="title">
-          Prevent interaction with streams
+          Prevent interaction with streams:
         </div>
         <input type="checkbox" checked={this.state.checked} />
       </div>
-    )
+    );
   }
 }

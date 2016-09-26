@@ -16,9 +16,36 @@ export const StreamRecord = Record({
   position: '',
 });
 
-export const DataRecord = Record({
+export class DataRecord extends Record({
   streams: new List([null, null, null, null, null]),
   transforms: new Map(),
   selectedStream: null,
+  race: List(),
   overlayOn: true,
-});
+}) {
+  static fromJS(object) {
+    let data = new DataRecord(object);
+    if (object.hasOwnProperty('streams')) {
+      const streams = object.streams.map(stream => {
+        if (stream) {
+          return StreamRecord(stream);
+        }
+        return null;
+      });
+      data = data.set('streams', List(streams));
+    }
+    if (object.hasOwnProperty('transforms')) {
+      const transforms = object.transforms;
+      let map = Map();
+      for (let name in transforms) {
+        map = map.set(name, new TransformRecord(transforms[name]));
+      }
+      data = data.set('transforms', map);
+    }
+    if (object.hasOwnProperty('race')) {
+      const race = List(object.race);
+      data = data.set('race', race);
+    }
+    return data;
+  }
+}

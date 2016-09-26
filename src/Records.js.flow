@@ -46,6 +46,7 @@ declare export class DataRecord {
   streams: List<?StreamRecord>;
   transforms: Map<string, TransformRecord>;
   selectedStream: ?string;
+  race: List<string>;
   overlayOn: boolean;
 
   constructor(
@@ -53,6 +54,7 @@ declare export class DataRecord {
       streams?: List<?StreamRecord>,
       transforms?: Map<string, TransformRecord>,
       selectedStream?: ?string,
+      race?: List<string>,
       overlayOn?: boolean,
     }
   ): this;
@@ -61,6 +63,7 @@ declare export class DataRecord {
   set(location: 'transforms', value: Map<string, TransformRecord>): DataRecord;
   set(location: 'selectedStream', value: ?string): DataRecord;
   set(property: 'overlayOn', value: boolean): DataRecord;
+  set(property: 'race', value: List<string>): DataRecord;
 
   setIn(location: ['streams'], value: List<?StreamRecord>): DataRecord;
   setIn(location: ['streams', number], value: ?StreamRecord): DataRecord;
@@ -70,6 +73,31 @@ declare export class DataRecord {
   setIn(location: ['transforms', string, TransformRecordProp], value: number): DataRecord;
   setIn(location: ['selectedStream'], value: ?string): DataRecord;
   setIn(location: ['overlayOn'], value: boolean): DataRecord;
-  
+  setIn(location: ['race'], value: List<string>): DataRecord;
+
   deleteIn(location: Array<string>): DataRecord;
+
+  static fromJS(object: {
+    streams: Array<?{
+      name: string,
+      position: string,
+      type: 'clip',
+      clip: string,
+    } | {
+      name: string,
+      type: 'stream',
+      position: string,
+    }>,
+    transforms: {
+      [key: string]: {
+        top: number,
+        left: number,
+        scale: number,
+        stretch: number,
+      }
+    },
+    selectedStream: string,
+    race: Array<string>,
+    overlayOn: boolean,
+  }): DataRecord;
 }

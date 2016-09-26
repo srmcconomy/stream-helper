@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import store from './store';
 import dispatcher from './dispatcher';
-
+import './MoveTool.css';
 
 type State = {
   name: ?string,
@@ -30,8 +30,8 @@ export default class MoveTool extends Component {
         type: 'move-stream',
         from: 'loading',
         to: position,
-      })
-    }
+      });
+    };
   }
 
   componentDidMount() {
@@ -53,16 +53,19 @@ export default class MoveTool extends Component {
   }
 
   render() {
+    const text = this.state.name ?
+      `Move ${this.state.name}'s stream` :
+      'Remove Stream';
     return (
       <div className="MoveTool">
         <div className="title">
-          Move {this.state.name}'s stream
+          {text}
         </div>
-        <div>
-          <button onClick={this._onClick('one')} />
-          <button onClick={this._onClick('two')} />
-          <button onClick={this._onClick('three')} />
-          <button onClick={this._onClick('full')} />
+        <div className="button-area">
+          <button className="one" onClick={this._onClick('one')} />
+          <button className="two" onClick={this._onClick('two')} />
+          <button className="three" onClick={this._onClick('three')} />
+          <button className="full" onClick={this._onClick('full')} />
         </div>
       </div>
     );

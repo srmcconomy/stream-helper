@@ -1,7 +1,7 @@
 // @flow
 
 import EventEmitter from 'events';
-import { DataRecord } from './Records';
+import { DataRecord, TransformRecord } from './Records';
 import dispatcher from './dispatcher';
 import type { DispatchToken } from './dispatcher';
 
@@ -38,6 +38,12 @@ class Store extends EventEmitter {
             ['streams', toIndex],
             payload.stream
           );
+          if (!this._data.transforms.has(payload.stream.name)) {
+            this._data = this._data.setIn(
+              ['transforms', payload.stream.name],
+              new TransformRecord()
+            );
+          }
           break;
         }
 
@@ -81,12 +87,21 @@ class Store extends EventEmitter {
             ['streams', toIndex],
             payload.stream
           ).set('selectedStream', payload.name);
+          if (!this._data.transforms.has(payload.stream.name)) {
+            this._data = this._data.setIn(
+              ['transforms', payload.stream.name],
+              new TransformRecord()
+            );
+          }
           break;
         }
 
         case 'set-overlay':
           this._data = this._data.set('overlayOn', payload.value);
           break;
+
+        case 'set-race':
+          this._data = this._data.set('race', payload.entrants);
 
         default: break;
       }
@@ -110,6 +125,13 @@ class Store extends EventEmitter {
 
   get() {
     return this._data;
+  }
+
+  set = (newData: DataRecord) => {
+    if (newData !== this._data) {
+      this._data = newData;
+      this.emitChange();
+    }
   }
 }
 

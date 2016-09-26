@@ -1,0 +1,33 @@
+.MoveTool .button-area {
+  position: relative;
+  height: 60px;
+  width: 160px;
+}
+
+.MoveTool .button-area button {
+  position: absolute;
+  height: 45%;
+  width: 22.5%;
+}
+
+.MoveTool .one {
+  right: 51.666%;
+  top: 3.333%
+}
+
+.MoveTool .two {
+  right: 51.666%;
+  bottom: 3.333%;
+}
+
+.MoveTool .three {
+  left: 1.666%;
+  bottom: 3.333%;
+}
+
+.MoveTool button.full{
+  height: 90%;
+  width: 45%;
+  right: 5%;
+  top: 5%;
+}
