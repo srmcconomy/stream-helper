@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="shortcut icon" href="./src/favicon.ico">
-      <link rel="stylesheet" type="text/css" href="css/main.1ef16628.css">
+      <link rel="stylesheet" type="text/css" href="css/main.6ade02eb.css">
       <title>Commentary Helper</title>
     </head>
     <body>

@@ -50,3 +50,14 @@ iframe {
   font-weight: 600;
   -webkit-text-stroke: 0.15vh black;
 }
+
+.Stream .header {
+  position: absolute;
+  bottom: 2vh;
+  left: 2vh;
+  font-size: 3.5vh;
+  color: white;
+  z-index: 1;
+  font-weight: 600;
+  -webkit-text-stroke: 0.15vh black;
+}
