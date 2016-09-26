@@ -31,12 +31,12 @@ app.get('/', (req, res) => {
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="shortcut icon" href="./src/favicon.ico">
       <link rel="stylesheet" type="text/css" href="css/main.1ef16628.css">
-      <title>React App</title>
+      <title>Commentary Helper</title>
     </head>
     <body>
       <div id="root">${build}</div>
     </body>
-    <script src="js/main.941b15d6.js"></script>
+    <script src="js/main.91232076.js"></script>
   </html>`
   res.send(html);
 });
