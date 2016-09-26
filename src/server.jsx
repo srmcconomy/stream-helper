@@ -18,7 +18,7 @@ import type { Payload } from './dispatcher';
 import './SRL';
 import fs from 'fs';
 
-server.listen(3001);
+server.listen(process.env.PORT || 8084);
 
 app.use(express.static('build/static'))
 
