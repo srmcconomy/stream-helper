@@ -1,13 +1,14 @@
 // @flow
 
-import React, { Component } from 'react';
-import StreamTool from './StreamTool';
-import MoveTool from './MoveTool';
-import TransformTool from './TransformTool';
-import OverlayTool from './OverlayTool';
-import ClipTool from './ClipTool';
-import SRLTool from './SRLTool';
 import './Toolbar.css';
+import AspectTool from './AspectTool';
+import ClipTool from './ClipTool';
+import MoveTool from './MoveTool';
+import OverlayTool from './OverlayTool';
+import React, { Component } from 'react';
+import SRLTool from './SRLTool';
+import StreamTool from './StreamTool';
+import TransformTool from './TransformTool';
 
 export default class Toolbar extends Component {
   render() {
@@ -22,6 +23,7 @@ export default class Toolbar extends Component {
         <MoveTool />
         <OverlayTool />
         <ClipTool />
+        <AspectTool />
       </div>
     );
   }

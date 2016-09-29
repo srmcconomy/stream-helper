@@ -4,15 +4,18 @@ import React, { Component } from 'react';
 import store from './store';
 import { TransformRecord, StreamRecord } from './Records';
 import './Stream.css';
+import './sizes.css';
 import dispatcher from './dispatcher';
 
 type Props = {
   index: number,
+  aspect: string,
 }
 
 type State = {
   stream: ?StreamRecord,
   transform: ?TransformRecord,
+  lifeState: 'fading' | 'appearing' | 'alive',
 }
 
 export default class Stream extends Component {
@@ -30,18 +33,27 @@ export default class Stream extends Component {
         this.state = {
           transform: data.transforms.get(stream.name),
           stream,
+          lifeState: 'alive',
         };
       } else {
         this.state = {
           transform: new TransformRecord(),
           stream,
+          lifeState: 'alive',
         };
       }
     } else {
       this.state = {
         stream: null,
         transform: null,
+        lifeState: 'alive',
       }
+    }
+  }
+
+  _onTransitionEnd = () => {
+    if (this.state.lifeState === 'fading') {
+      this.setState({ lifeState: 'alive', stream: null, transform: null })
     }
   }
 
@@ -56,26 +68,47 @@ export default class Stream extends Component {
   _onStoreChange = (): void => {
     const data = store.get();
     const stream = data.streams.get(this.props.index);
+    if (this.state.stream && !stream) {
+      this.setState({ lifeState: 'fading' });
+      return;
+    }
+    if (!stream) {
+      this.setState({ stream, transform: null });
+      return;
+    }
+    let lifeState = this.state.lifeState;
     let transform = this.state.transform;
     if (stream && stream.name && data.transforms.has(stream.name)) {
       transform = data.transforms.get(stream.name);
     }
-    if (!stream) {
-      transform = null;
-    } else if (!transform) {
+
+    if (!transform) {
       transform = new TransformRecord();
     }
-    this.setState({ stream, transform });
+
+    if (this.state.lifeState === 'alive' &&
+      this.state.stream &&
+      this.state.stream.position === 'loading' &&
+      stream.position !== 'loading'
+    ) {
+      lifeState = 'appearing';
+      setTimeout(() => {
+        this.setState({ lifeState: 'alive' });
+      }, 500)
+    } else {
+      lifeState = 'alive';
+    }
+    this.setState({ stream, transform, lifeState });
   }
 
   render() {
-    const { stream, transform } = this.state;
+    const { aspect } = this.props;
+    const { stream, transform, lifeState } = this.state;
     if (stream && transform) {
       const { name, position, type, clip } = stream;
       const { left, top, scale, stretch } = transform;
-      const multiplier = position === 'full' ? 2 : 1;
-      const width = 80 * scale;
-      const height = 45 * scale;
+      const width = 133.333 * scale;
+      const height = 100 * scale;
       let url;
       if (type === 'stream') {
         url = `http://player.twitch.tv/?muted=true&channel=${name}`;
@@ -87,19 +120,22 @@ export default class Stream extends Component {
         header = <div className="header">Instant Replay</div>;
       }
       return (
-        <div className={`Stream ${position}`}>
+        <div
+          className={`Stream ${position} ${lifeState}`}
+          onTransitionEnd={this._onTransitionEnd}>
           {header}
           <div className="name">{name}</div>
           <iframe
             src={url}
             style={{
-              left: `${left * multiplier}vh`,
-              top: `${top * multiplier}vh`,
-              height: `calc(${height * multiplier}vh + 1px)`,
-              width: `calc(${width * multiplier}vh + 1px)`,
+              left: `${left}%`,
+              top: `${top}%`,
+              height: `${height}%`,
+              width: `${width}%`,
               transform: `scaleX(${stretch})`,
             }}
           />
+          <div className="cover" />
         </div>
       );
     } else {

@@ -1,6 +1,6 @@
 // @flow
 
-import type { TransformRecord, StreamRecord } from './Records';
+import type { TransformRecord, StreamRecord, Aspect } from './Records';
 import type { List } from 'immutable';
 
 export type DispatchToken = string;
@@ -11,18 +11,18 @@ type TransformPayload = {
   transform: TransformRecord,
 }
 
-type StreamPayload = {
+type LoadPayload = {
   type: 'set-stream',
   stream: StreamRecord,
   name: string,
 }
 
-type SelectedPayload = {
+type SelectPayload = {
   type: 'select-stream',
-  name: string,
+  position: string,
 }
 
-type SetAndSelectPayload = {
+type LoadAndSelectPayload = {
   type: 'set-and-select-stream',
   stream: StreamRecord,
   name: string,
@@ -30,8 +30,13 @@ type SetAndSelectPayload = {
 
 type MovePayload = {
   type: 'move-stream',
-  from: string,
-  to: string,
+  name: string,
+  position: string,
+}
+
+type RemovePayload = {
+  type: 'remove-stream',
+  name: string,
 }
 
 type OverlayPayload = {
@@ -49,14 +54,21 @@ type SetRacePayload = {
   entrants: List<string>,
 }
 
+type AspectPayload = {
+  type: 'set-aspect',
+  aspect: Aspect,
+}
+
 export type Payload = TransformPayload |
-  StreamPayload |
-  SelectedPayload |
+  LoadPayload |
+  SelectPayload |
   MovePayload |
-  SetAndSelectPayload |
+  RemovePayload |
+  LoadAndSelectPayload |
   OverlayPayload |
   LoadRacePayload |
-  SetRacePayload;
+  SetRacePayload |
+  AspectPayload;
 
 declare class ExceptDispatcher<TPayload> {
   register(callback: (payload: TPayload) => void): DispatchToken;

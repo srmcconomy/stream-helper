@@ -30,13 +30,13 @@ app.get('/', (req, res) => {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="shortcut icon" href="./src/favicon.ico">
-      <link rel="stylesheet" type="text/css" href="css/main.6ade02eb.css">
+      <link rel="stylesheet" type="text/css" href="css/main.c2339c46.css">
       <title>Commentary Helper</title>
     </head>
     <body>
       <div id="root">${build}</div>
     </body>
-    <script src="js/main.91232076.js"></script>
+    <script src="http://localhost:3000/static/js/bundle.js"></script>
   </html>`
   res.send(html);
 });

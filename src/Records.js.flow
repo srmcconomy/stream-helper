@@ -42,12 +42,15 @@ declare export class StreamRecord {
   ): this;
 }
 
+export type Aspect = 'a4-3' | 'a16-9';
+
 declare export class DataRecord {
   streams: List<?StreamRecord>;
   transforms: Map<string, TransformRecord>;
   selectedStream: ?string;
   race: List<string>;
   overlayOn: boolean;
+  aspect: Aspect;
 
   constructor(
     defaultValues?: {
@@ -56,6 +59,7 @@ declare export class DataRecord {
       selectedStream?: ?string,
       race?: List<string>,
       overlayOn?: boolean,
+      aspect?: Aspect,
     }
   ): this;
 
@@ -64,6 +68,7 @@ declare export class DataRecord {
   set(location: 'selectedStream', value: ?string): DataRecord;
   set(property: 'overlayOn', value: boolean): DataRecord;
   set(property: 'race', value: List<string>): DataRecord;
+  set(property: 'aspect', value: Aspect): DataRecord;
 
   setIn(location: ['streams'], value: List<?StreamRecord>): DataRecord;
   setIn(location: ['streams', number], value: ?StreamRecord): DataRecord;
@@ -74,8 +79,36 @@ declare export class DataRecord {
   setIn(location: ['selectedStream'], value: ?string): DataRecord;
   setIn(location: ['overlayOn'], value: boolean): DataRecord;
   setIn(location: ['race'], value: List<string>): DataRecord;
+  setIn(location: ['race', number], value: string): DataRecord;
+  setIn(location: ['aspect'], value: Aspect): DataRecord;
+
 
   deleteIn(location: Array<string>): DataRecord;
+
+  toJS(): {
+    streams: Array<?{
+      name: string,
+      position: string,
+      type: 'clip',
+      clip: string,
+    } | {
+      name: string,
+      type: 'stream',
+      position: string,
+    }>,
+    transforms: {
+      [key: string]: {
+        top: number,
+        left: number,
+        scale: number,
+        stretch: number,
+      }
+    },
+    selectedStream: string,
+    race: Array<string>,
+    overlayOn: boolean,
+    aspect: Aspect,
+  };
 
   static fromJS(object: {
     streams: Array<?{
@@ -99,5 +132,6 @@ declare export class DataRecord {
     selectedStream: string,
     race: Array<string>,
     overlayOn: boolean,
+    aspect: Aspect,
   }): DataRecord;
 }

@@ -48,30 +48,46 @@ class Store extends EventEmitter {
         }
 
         case 'move-stream': {
-          const { from, to } = payload;
+          const { name, position } = payload;
           const fromIndex = this._data.streams.findIndex(
-            value => value && value.position === from
+            value => value && value.name === name
           );
           let toIndex = this._data.streams.findIndex(
-            value => value && value.position === to
+            value => value && value.position === position
           );
-          if (fromIndex > -1) {
-            this._data = this._data.setIn(
-              ['streams', fromIndex, 'position'],
-              to
-            );
-          }
           if (toIndex > -1) {
             this._data = this._data.setIn(
               ['streams', toIndex],
               null
             );
           }
+          if (fromIndex > -1) {
+            this._data = this._data.setIn(
+              ['streams', fromIndex, 'position'],
+              position
+            );
+          }
+          this._data = this._data.set('selectedStream', null);
           break;
         }
 
+        case 'remove-stream':
+          const { name } = payload;
+          const index = this._data.streams.findIndex(s => s && s.name === name);
+          if (index > -1) {
+            this._data = this._data.setIn(
+              ['streams', index],
+              null
+            );
+          }
+          break;
+
         case 'select-stream':
-          this._data = this._data.set('selectedStream', payload.name);
+          const { position } = payload;
+          const stream = this._data.streams.find(s => s && s.position === position);
+          if (stream) {
+            this._data = this._data.set('selectedStream', stream.name);
+          }
           break;
 
         case 'set-and-select-stream': {
@@ -102,6 +118,11 @@ class Store extends EventEmitter {
 
         case 'set-race':
           this._data = this._data.set('race', payload.entrants);
+          break;
+
+        case 'set-aspect':
+          this._data = this._data.set('aspect', payload.aspect);
+          break;
 
         default: break;
       }

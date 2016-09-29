@@ -17,11 +17,12 @@ export const StreamRecord = Record({
 });
 
 export class DataRecord extends Record({
-  streams: new List([null, null, null, null, null]),
+  streams: List().setSize(10).map(() => null),
   transforms: new Map(),
   selectedStream: null,
   race: List(),
   overlayOn: true,
+  aspect: 'a4-3',
 }) {
   static fromJS(object) {
     let data = new DataRecord(object);

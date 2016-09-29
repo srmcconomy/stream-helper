@@ -4,10 +4,28 @@ import React, { Component } from 'react';
 import store from './store';
 import dispatcher from './dispatcher';
 import './MoveTool.css';
+import './sizes.css'
 
 type State = {
-  name: ?string,
+  selectedStream: ?string,
 };
+
+const buttonAreas = [
+  [
+    'f f1-1',
+    'f f2-1',
+    'f f1-2',
+    'f f2-2',
+  ], [
+    'tv tv-1',
+    'tv tv-2',
+  ], [
+    'th th-1',
+    'th th-2',
+  ], [
+    'o',
+  ],
+]
 
 export default class MoveTool extends Component {
 
@@ -16,21 +34,34 @@ export default class MoveTool extends Component {
   constructor() {
     super();
     const data = store.get();
-    const stream = data.streams.find(stream => stream && stream.position === 'loading');
-    if (stream) {
-      this.state = { name: stream.name };
-    } else {
-      this.state = { name: null };
-    }
+    this.state = { selectedStream: data.selectedStream };
   }
 
   _onClick(position: string) {
     return () => {
-      dispatcher.dispatch({
-        type: 'move-stream',
-        from: 'loading',
-        to: position,
-      });
+
+      const { selectedStream } = this.state;
+      if (selectedStream) {
+        const data = store.get();
+        const stream = data.streams.find(s => s && s.name === selectedStream);
+        if (stream && stream.position === position) {
+          dispatcher.dispatch({
+            type: 'remove-stream',
+            name: selectedStream,
+          });
+        } else {
+          dispatcher.dispatch({
+            type: 'move-stream',
+            name: selectedStream,
+            position,
+          });
+        }
+      } else {
+        dispatcher.dispatch({
+          type: 'select-stream',
+          position
+        })
+      }
     };
   }
 
@@ -44,28 +75,50 @@ export default class MoveTool extends Component {
 
   _onStoreChange = () => {
     const data = store.get();
-    const stream = data.streams.find(
-      stream => stream && stream.position === 'loading'
-    );
-    if (stream) {
-      this.setState({ name: stream.name });
-    }
+    this.setState({ selectedStream: data.selectedStream })
   }
 
   render() {
-    const text = this.state.name ?
-      `Move ${this.state.name}'s stream` :
-      'Remove Stream';
+    const text = this.state.selectedStream ?
+      `Move or remove ${this.state.selectedStream}'s stream` :
+      'Select a stream';
+
+    const data = store.get();
+    let stream = null;
+    if (this.state.selectedStream) {
+      stream = data.streams.find(
+        s => s && s.name === this.state.selectedStream
+      );
+    }
+
+    const areas = buttonAreas.map((a, i) => {
+      const buttons = a.map(c => {
+        let symbol = null;
+        if (this.state.selectedStream) {
+          symbol = '\u2794';
+          if (stream && c === stream.position) {
+            symbol = '\u2715';
+          }
+        }
+        return (
+          <button key={c} className={c} onClick={this._onClick(c)}>
+            {symbol}
+          </button>
+        );
+      });
+      return (
+        <div key={i} className="button-area">
+          {buttons}
+        </div>
+      )
+    });
     return (
       <div className="MoveTool">
         <div className="title">
           {text}
         </div>
-        <div className="button-area">
-          <button className="one" onClick={this._onClick('one')} />
-          <button className="two" onClick={this._onClick('two')} />
-          <button className="three" onClick={this._onClick('three')} />
-          <button className="full" onClick={this._onClick('full')} />
+        <div className="areas">
+          {areas}
         </div>
       </div>
     );

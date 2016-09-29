@@ -6,44 +6,49 @@ iframe {
 
 .Stream {
   position: absolute;
-  height: 45vh;
-  width: 60vh;
   overflow: hidden;
+  z-index: 10;
 }
 
-.Stream.one {
-  right: 4.444vh;
-  top: 3.333vh;
+.Stream.o {
+  z-index: 30;
 }
 
-.Stream.two {
-  right: 4.444vh;
-  bottom: 3.333vh;
+.Stream.o.fading {
+  z-index: 40;
 }
 
-.Stream.three {
-  right: 68.888vh;
-  bottom: 3.333vh;
+.Stream:not(.loading):not(.appearing) {
+  transition: 0.5s ease-in-out;
 }
 
-.Stream.loading {
-  right: 136.666vh;
-  bottom: 4.444vh;
-  background: magenta;
+.Stream.fading {
+  z-index: 20;
+  opacity: 0;
 }
 
-.Stream.full {
-  z-index: 5;
-  height: 90vh;
-  width: 120vh;
-  right: 6.666vh;
-  top: 4.444vh;
+.Stream.appearing .cover {
+  opacity: 1;
+}
+
+.Stream .cover {
+  background: black;
+  z-index: 2;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  pointer-events: none;
+}
+
+.Stream:not(.appearing) .cover {
+  transition: opacity 0.5s ease-in-out;
 }
 
 .Stream .name {
   position: absolute;
-  top: 2vh;
-  right: 2vh;
+  top: 4%;
+  right: 4%;
   font-size: 3.5vh;
   color: white;
   z-index: 1;
@@ -53,11 +58,23 @@ iframe {
 
 .Stream .header {
   position: absolute;
-  bottom: 2vh;
-  left: 2vh;
+  bottom: 4%;
+  left: 4%;
   font-size: 3.5vh;
   color: white;
   z-index: 1;
   font-weight: 600;
   -webkit-text-stroke: 0.15vh black;
+}
+
+.Stream.loading {
+  height: 45%;
+  width: 45%;
+  left: -48.333%;
+  bottom: 3.333%;
+  background: magenta;
+}
+
+.Stream.loading, .Stream.appearing {
+  z-index: 5;
 }

@@ -1,4 +1,12 @@
 .StreamArea {
   background: #202020;
+  position: relative;
+}
+
+.a4-3 .StreamArea {
   width: 133.333vh;
+}
+
+.a16-9 .StreamArea {
+  width: 177.777vh;
 }

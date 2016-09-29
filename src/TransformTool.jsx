@@ -25,18 +25,10 @@ export default class TransformTool extends Component {
   constructor() {
     super();
     const data = store.get();
-    const name = data.selectedStream;
-    if (name) {
-      this.state = {
-        name,
-        transform: data.transforms.get(name),
-      };
-    } else {
-      this.state = {
-        name: '',
-        transform: new TransformRecord(),
-      };
-    }
+    this.state = {
+      name: data.selectedStream,
+      transform: new TransformRecord(),
+    };
   }
 
   _onChange(prop: TransformRecordProp) {
