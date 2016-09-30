@@ -135,7 +135,6 @@ export default class Stream extends Component {
               transform: `scaleX(${stretch})`,
             }}
           />
-          <div className="cover" />
         </div>
       );
     } else {

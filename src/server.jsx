@@ -21,6 +21,7 @@ import fs from 'fs';
 server.listen(process.env.PORT || 8084);
 
 app.use(express.static('build/static'))
+app.use('/images', express.static('images'))
 
 app.get('/', (req, res) => {
   const build = ReactDOMServer.renderToString(<App />);
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="shortcut icon" href="./src/favicon.ico">
-      <link rel="stylesheet" type="text/css" href="css/main.c2339c46.css">
+      <link rel="stylesheet" type="text/css" href="css/main.5e8e99d7.css">
       <title>Commentary Helper</title>
     </head>
     <body>

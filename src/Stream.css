@@ -8,6 +8,7 @@ iframe {
   position: absolute;
   overflow: hidden;
   z-index: 10;
+  box-shadow: 0 0 30px 10px rgba(0,0,0,0.6);
 }
 
 .Stream.o {
@@ -22,27 +23,13 @@ iframe {
   transition: 0.5s ease-in-out;
 }
 
+.Stream.appearing {
+  opacity: 0;
+}
+
 .Stream.fading {
   z-index: 20;
   opacity: 0;
-}
-
-.Stream.appearing .cover {
-  opacity: 1;
-}
-
-.Stream .cover {
-  background: black;
-  z-index: 2;
-  opacity: 0;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  pointer-events: none;
-}
-
-.Stream:not(.appearing) .cover {
-  transition: opacity 0.5s ease-in-out;
 }
 
 .Stream .name {

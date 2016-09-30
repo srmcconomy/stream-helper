@@ -1,6 +1,9 @@
 .StreamArea {
   background: #202020;
   position: relative;
+  background-position: center;
+  background-size: cover;
+  transition: background 20s ease-in-out;
 }
 
 .a4-3 .StreamArea {
