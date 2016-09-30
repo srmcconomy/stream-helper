@@ -6,7 +6,7 @@ import { StreamRecord } from './Records';
 import dispatcher from './dispatcher';
 import './ClipTool.css';
 
-const clipUrlRegex = /https:\/\/clips\.twitch\.tv\/([a-zA-Z][a-zA-Z0-9_]*)\/([a-zA-Z]+)/;
+const clipUrlRegex = /https:\/\/clips\.twitch\.tv\/([^\/]+)\/([^\/]+)/;
 
 type State = {
   url: string,
