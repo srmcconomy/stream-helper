@@ -1,5 +1,6 @@
 .MoveTool .areas {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .MoveTool .button-area {
